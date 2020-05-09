@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigationview">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@drawable/ic_menu"
+            android:title="Main menu" />
+        <item
+            android:id="@+id/nav_customerorder"
+            android:icon="@drawable/ic_order"
+            android:title="Customer Order" />
+        <item
+            android:id="@+id/nav_clothes"
+            android:icon="@drawable/ic_clothes"
+            android:title="Clothes" />
+    </group>
+    <item android:title="Help">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_profile"
+                android:title="Company Profile" />
+        </menu>
+    </item>
+</menu>
