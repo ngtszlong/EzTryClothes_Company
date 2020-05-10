@@ -1,10 +1,11 @@
 package com.ngtszlong.eztryclothes_company.Clothes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,10 +34,21 @@ public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ClothesList clothesList = clothesListArrayList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        final ClothesList clothesList = clothesListArrayList.get(position);
         holder.textView.setText(clothesList.getName_Eng());
-        Picasso.get().load(clothesList.getImage()).into(holder.imageView);
+        if (!clothesList.getImage().equals("")){
+            Picasso.get().load(clothesList.getImage()).into(holder.imageView);
+        }
+        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(context, EditClothesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("no", clothesList.getNo());
+                context.getApplicationContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -47,10 +59,12 @@ public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textView;
+        Button btn_edit;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_cloth_img);
             textView = itemView.findViewById(R.id.txt_cloth_name);
+            btn_edit = itemView.findViewById(R.id.btn_cloth_edit);
         }
     }
 }

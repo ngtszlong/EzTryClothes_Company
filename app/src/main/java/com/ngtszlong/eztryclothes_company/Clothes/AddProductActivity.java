@@ -1,12 +1,18 @@
 package com.ngtszlong.eztryclothes_company.Clothes;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,14 +23,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.ngtszlong.eztryclothes_company.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +45,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class AddProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private static final String TAG = "AddProductFragment";
+
     EditText edt_name_chi;
     EditText edt_name_eng;
     RadioButton rb_male;
@@ -61,8 +76,17 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
     FirebaseUser user;
     Product product;
     String gender;
-    String uploadimage;
-    String uploadtry;
+
+    String XL = "N";
+    String L = "N";
+    String M = "N";
+    String S = "N";
+    String XS = "N";
+
+    int PICK_IMAGE_REQUEST = 10001;
+    Uri filePath_try;
+    Uri filePath_img;
+    String action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +139,7 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String myFormat = "MM/dd/yy"; //In which you need put here
+                String myFormat = "MM/dd/yy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 txt_date.setText(sdf.format(myCalendar.getTime()));
@@ -132,16 +156,136 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         upload_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                action = "IMAGE";
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
 
         upload_try.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                action = "TRY";
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
+
+        btn_Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploaddata();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (action.equals("IMAGE")) {
+            if (requestCode == PICK_IMAGE_REQUEST) {
+                switch (resultCode) {
+                    case RESULT_OK:
+                        if (data != null && data.getData() != null) {
+                            filePath_img = data.getData();
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath_img);
+                                handleUpload(bitmap);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        }
+                }
+            }
+        } else if (action.equals("TRY")) {
+            if (requestCode == PICK_IMAGE_REQUEST) {
+                switch (resultCode) {
+                    case RESULT_OK:
+                        if (data != null && data.getData() != null) {
+                            filePath_try = data.getData();
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath_try);
+                                handleUpload(bitmap);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        }
+                }
+            }
+        }
+
+    }
+
+    private void handleUpload(Bitmap bitmap) {
+        if (action.equals("IMAGE")) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://eztryclothes-3b490.appspot.com");
+            final StorageReference reference = storageReference
+                    .child("productImage")
+                    .child(date + ".jpeg");
+
+            reference.putBytes(baos.toByteArray())
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            getDownloadUrl(reference);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "onFailure: ", e.getCause());
+                        }
+                    });
+        } else if (action.equals("TRY")) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://eztryclothes-3b490.appspot.com");
+            final StorageReference reference = storageReference
+                    .child("productTry")
+                    .child(date + ".png");
+
+            reference.putBytes(baos.toByteArray())
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            getDownloadUrl(reference);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "onFailure: ", e.getCause());
+                        }
+                    });
+        }
+
+    }
+
+    private void getDownloadUrl(StorageReference reference) {
+        if (action.equals("IMAGE")) {
+            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.d(TAG, "onSuccess: " + uri);
+                    filePath_img = uri;
+                }
+            });
+        } else if (action.equals("TRY")) {
+            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.d(TAG, "onSuccess: " + uri);
+                    filePath_try = uri;
+                }
+            });
+        }
+        Toast.makeText(AddProductActivity.this, filePath_img.toString() + " && " + filePath_try.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -161,6 +305,27 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
     }
 
     public void uploaddata() {
+        if (rb_xl.isChecked()) {
+            XL = "Y";
+        }
+        if (rb_l.isChecked()) {
+            L = "Y";
+        }
+        if (rb_m.isChecked()) {
+            M = "Y";
+        }
+        if (rb_s.isChecked()) {
+            S = "Y";
+        }
+        if (rb_xs.isChecked()) {
+            XS = "Y";
+        }
+        if (rb_male.isChecked()) {
+            gender = "Male";
+        }
+        if (rb_female.isChecked()) {
+            gender = "Female";
+        }
         String uid = user.getUid();
         String companyname = user.getDisplayName();
         product.setUid(uid);
@@ -172,20 +337,28 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         product.setDescription_Eng(edt_description_eng.getText().toString());
         product.setDiscount(edt_discourt.getText().toString());
         product.setGender(gender);
-        product.setImage(uploadimage);
-        //product.setL();
-        //product.setM();
-        //product.setXS();
-        //product.setXL();
+        product.setL(L);
+        product.setM(M);
+        product.setXS(XS);
+        product.setXL(XL);
+        product.setS(S);
         product.setType(spinner_type.getSelectedItem().toString());
         product.setQuantity(edt_quantity.getText().toString());
         product.setName_Chi(edt_name_chi.getText().toString());
         product.setName_Eng(edt_name_eng.getText().toString());
-        //product.setS();
-        //product.setXS();
         product.setMaterial_Eng(edt_material_eng.getText().toString());
         product.setPrice(edt_price.getText().toString());
-        product.setTry_photo(uploadtry);
+        if (filePath_img != null) {
+            product.setImage(filePath_img.toString());
+        } else {
+            product.setImage("");
+        }
+        if (filePath_try != null) {
+            product.setTry_photo(filePath_try.toString());
+        } else {
+            product.setTry_photo("");
+        }
+        product.setReleaseDate(txt_date.getText().toString());
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Clothes");
         reference.child(date).setValue(product);

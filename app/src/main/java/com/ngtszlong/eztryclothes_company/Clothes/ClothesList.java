@@ -5,12 +5,14 @@ public class ClothesList {
     private String Name_Chi;
     private String Name_Eng;
     private String uid;
+    private String No;
 
-    public ClothesList(String image, String name_Chi, String name_Eng, String uid) {
+    public ClothesList(String image, String name_Chi, String name_Eng, String uid, String no) {
         Image = image;
         Name_Chi = name_Chi;
         Name_Eng = name_Eng;
         this.uid = uid;
+        No = no;
     }
 
     public ClothesList() {
@@ -46,5 +48,13 @@ public class ClothesList {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getNo() {
+        return No;
+    }
+
+    public void setNo(String no) {
+        No = no;
     }
 }
