@@ -4,10 +4,6 @@
     tools:showIn="navigationview">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_main"
-            android:icon="@drawable/ic_menu"
-            android:title="Main menu" />
-        <item
             android:id="@+id/nav_customerorder"
             android:icon="@drawable/ic_order"
             android:title="Customer Order" />

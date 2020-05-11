@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,17 +17,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ngtszlong.eztryclothes_company.Clothes.ClothesFragment;
-import com.ngtszlong.eztryclothes_company.Main.MainFragment;
 import com.ngtszlong.eztryclothes_company.Order.OrderFragment;
 import com.ngtszlong.eztryclothes_company.Profile.ProfileFragment;
-
-import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -38,8 +31,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
 
     FirebaseAuth firebaseAuth;
-    DatabaseReference databaseReference;
-    FirebaseDatabase firebaseDatabase;
     FirebaseUser firebaseUser;
 
     @Override
@@ -65,8 +56,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_main);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OrderFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_customerorder);
         }
 
         setHeaderInfo();
@@ -78,10 +69,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             if (firebaseUser.getPhotoUrl() != null) {
                 Glide.with(this).load(firebaseUser.getPhotoUrl()).into(image);
             }
-            if (firebaseUser.getEmail() != null){
+            if (firebaseUser.getEmail() != null) {
                 email.setText(firebaseUser.getEmail());
             }
-            if (firebaseUser.getDisplayName() != null){
+            if (firebaseUser.getDisplayName() != null) {
                 name.setText(firebaseUser.getDisplayName());
             }
         }
@@ -89,10 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_main:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
-                break;
+        switch (item.getItemId()) {
             case R.id.nav_customerorder:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OrderFragment()).commit();
                 break;
