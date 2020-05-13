@@ -24,9 +24,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="35dp"
         android:background="#11000000"
+        android:textColor="#FFFFFF"
         android:drawableLeft="@drawable/ic_user"
         android:ems="10"
-        android:hint="Username"
+        android:textColorHint="#FFFFFF"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:textSize="16dp" />
 
@@ -41,7 +43,9 @@
         android:background="#11000000"
         android:drawableLeft="@drawable/ic_pass"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:inputType="textPassword" />
 
     <androidx.cardview.widget.CardView
@@ -63,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Login"
+                android:text="@string/login"
                 android:textColor="#fff"
                 android:textSize="18sp" />
         </RelativeLayout>

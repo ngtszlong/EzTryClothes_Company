@@ -1,16 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">EzTryClothes_Company</string>
-    <string name="title_activity_home" translatable="false">HomeActivity</string>
-    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-
-    <string name="type" translatable="false">Spinner</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="CompanyLogin">Company Login</string>
     <string name="EmailisRequired">Email is Required</string>
     <string name="Passwordmorethan8words">Password must be more than 8 words</string>
-    <string name="Loggingin">"Logging in, Please wait..."</string>
+    <string name="Loggingin">Logging in, Please wait...</string>
     <string name="email">Email</string>
     <string name="customer_order">Customer Order</string>
     <string name="clothes">Clothes</string>
@@ -26,7 +22,7 @@
     <string name="clothestype">Type :</string>
     <string name="color">Color :</string>
     <string name="price">Price</string>
-    <string name="pricetag" >Price :</string>
+    <string name="pricetag">Price :</string>
     <string name="discount">Discount(%)</string>
     <string name="size">Size :</string>
     <string name="material">Material :</string>
@@ -45,13 +41,7 @@
     <string name="edit_product_info">Edit Product Info</string>
     <string name="product_price">Product Price: $</string>
     <string name="AddProduct">Add Product</string>
-    <string name="YourClothesList"> Your Clothes List</string>
+    <string name="YourClothesList">" Your Clothes List"</string>
     <string name="EditProduct">Edit Product</string>
     <string name="CustomerPurchaseOrder">Customer Purchase Order</string>
-    <string-array name="type">
-        <item>Hoodies</item>
-        <item>Shirt</item>
-        <item>T-Shirt</item>
-        <item>Dress</item>
-    </string-array>
 </resources>

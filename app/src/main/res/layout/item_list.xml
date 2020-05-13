@@ -25,12 +25,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:text="Test"
             android:layout_centerInParent="true"/>
 
         <Button
             android:id="@+id/btn_cloth_edit"
-            android:text="Edit Product Info"
+            android:text="@string/edit_product_info"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

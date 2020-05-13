@@ -12,9 +12,9 @@
         android:id="@+id/img_pro_image"
         android:layout_width="180dp"
         android:layout_height="180dp"
+        android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="80dp"
-        android:layout_gravity="center"
         android:src="@drawable/ic_help" />
 
     <LinearLayout
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Company Email "
+            android:text="@string/company_email"
             android:textColor="#FFFFFF" />
 
         <EditText
@@ -36,8 +36,8 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:background="#11000000"
-            android:textColor="#FFFFFF"
             android:enabled="false"
+            android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="16dp" />
     </LinearLayout>
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Company Name "
+            android:text="@string/company_name"
             android:textColor="#FFFFFF" />
 
         <EditText
@@ -61,18 +61,18 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:background="#11000000"
-            android:textColor="#FFFFFF"
             android:enabled="false"
+            android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="16dp" />
     </LinearLayout>
 
----    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/btn_pro_update"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-    android:layout_marginTop="50dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="30dp"
         app:cardBackgroundColor="@color/colorAccent"
         app:cardCornerRadius="25dp"
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Update"
+                android:text="@string/update"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
         </RelativeLayout>

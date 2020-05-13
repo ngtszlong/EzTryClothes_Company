@@ -86,6 +86,8 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
     int PICK_IMAGE_REQUEST = 10001;
     Uri filePath_try;
     Uri filePath_img;
+    Uri getFilePath_try;
+    Uri getFilePath_img;
     String action;
 
     @Override
@@ -124,7 +126,7 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         toolbar = findViewById(R.id.tb_addproduct);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Add Product");
+        getSupportActionBar().setTitle(getText(R.string.AddProduct));
 
         rb_male.setChecked(true);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.type, android.R.layout.simple_spinner_item);
@@ -187,9 +189,9 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
                 switch (resultCode) {
                     case RESULT_OK:
                         if (data != null && data.getData() != null) {
-                            filePath_img = data.getData();
+                            getFilePath_img= data.getData();
                             try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath_img);
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), getFilePath_img);
                                 handleUpload(bitmap);
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -203,9 +205,9 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
                 switch (resultCode) {
                     case RESULT_OK:
                         if (data != null && data.getData() != null) {
-                            filePath_try = data.getData();
+                            getFilePath_try = data.getData();
                             try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath_try);
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), getFilePath_try);
                                 handleUpload(bitmap);
                             } catch (IOException e) {
                                 e.printStackTrace();

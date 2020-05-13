@@ -1,6 +1,7 @@
 package com.ngtszlong.eztryclothes_company.Clothes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,7 @@ public class ClothesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_clothes, container, false);
-        getActivity().setTitle("Your Clothes List");
+        getActivity().setTitle(getText(R.string.YourClothesList));
         floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +60,7 @@ public class ClothesFragment extends Fragment {
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                SharedPreferences sp = getActivity().getSharedPreferences( "Setting", 0 );
                 clothesListArrayList = new ArrayList<ClothesList>();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     ClothesList l = dataSnapshot1.getValue(ClothesList.class);

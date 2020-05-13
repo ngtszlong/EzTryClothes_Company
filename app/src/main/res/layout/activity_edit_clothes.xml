@@ -35,21 +35,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Product Name : " />
+                    android:text="@string/product_name" />
 
                 <EditText
                     android:id="@+id/edt_edit_name_chi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Chinese" />
+                    android:hint="@string/chinese" />
 
                 <EditText
                     android:id="@+id/edt_edit_name_eng"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="English" />
+                    android:hint="@string/english" />
             </LinearLayout>
 
             <LinearLayout
@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Gender : " />
+                    android:text="@string/gender" />
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -72,13 +72,13 @@
                         android:id="@+id/rb_edit_male"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Male" />
+                        android:text="@string/male" />
 
                     <RadioButton
                         android:id="@+id/rb_edit_female"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Female" />
+                        android:text="@string/female" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="Type : " />
+                    android:text="@string/type" />
 
                 <Spinner
                     android:id="@+id/spinner_edit_type"
@@ -109,21 +109,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Color : " />
+                    android:text="@string/color" />
 
                 <EditText
                     android:id="@+id/edt_edit_color_chi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Chinese" />
+                    android:hint="@string/chinese" />
 
                 <EditText
                     android:id="@+id/edt_edit_color_eng"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="English" />
+                    android:hint="@string/english" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,14 +134,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Price : " />
+                    android:text="@string/pricetag" />
 
                 <EditText
                     android:id="@+id/edt_edit_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Price"
+                    android:hint="@string/price"
                     android:inputType="number" />
 
                 <EditText
@@ -149,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Discount(%)"
+                    android:hint="@string/discount"
                     android:inputType="number" />
 
             </LinearLayout>
@@ -163,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Size : " />
+                    android:text="@string/size" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -211,21 +211,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Material : " />
+                    android:text="@string/material" />
 
                 <EditText
                     android:id="@+id/edt_edit_material_chi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Chinese" />
+                    android:hint="@string/chinese" />
 
                 <EditText
                     android:id="@+id/edt_edit_material_eng"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="English" />
+                    android:hint="@string/english" />
             </LinearLayout>
 
             <LinearLayout
@@ -236,21 +236,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Description : " />
+                    android:text="@string/description" />
 
                 <EditText
                     android:id="@+id/edt_edit_description_chi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Chinese" />
+                    android:hint="@string/chinese" />
 
                 <EditText
                     android:id="@+id/edt_edit_description_eng"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="English" />
+                    android:hint="@string/english" />
             </LinearLayout>
 
             <LinearLayout
@@ -261,14 +261,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Release Date : " />
+                    android:text="@string/release_date" />
 
                 <TextView
                     android:id="@+id/txt_edit_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:hint="Tap to get Date"
+                    android:hint="@string/tap_to_get_date"
                     android:inputType="date"
                     android:textSize="24sp" />
             </LinearLayout>
@@ -281,7 +281,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Quantity : " />
+                    android:text="@string/quantity" />
 
                 <EditText
                     android:id="@+id/edt_edit_quantity"
@@ -300,10 +300,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="Product Image : " />
+                    android:text="@string/product_image" />
 
                 <ImageView
-                    android:id="@+id/img_edit_try"
+                    android:id="@+id/img_edit_image"
                     android:layout_weight="1"
                     android:src="@drawable/noimage"
                     android:layout_margin="20dp"
@@ -321,10 +321,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="Product Image for try : " />
+                    android:text="@string/product_image_for_try" />
 
                 <ImageView
-                    android:id="@+id/img_edit_image"
+                    android:id="@+id/img_edit_try"
                     android:layout_weight="1"
                     android:layout_margin="20dp"
                     android:src="@drawable/noimage"
@@ -351,7 +351,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="Update"
+                        android:text="@string/update"
                         android:textColor="#fff"
                         android:textSize="18sp" />
                 </RelativeLayout>

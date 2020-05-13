@@ -6,18 +6,22 @@
         <item
             android:id="@+id/nav_customerorder"
             android:icon="@drawable/ic_order"
-            android:title="Customer Order" />
+            android:title="@string/customer_order" />
         <item
             android:id="@+id/nav_clothes"
             android:icon="@drawable/ic_clothes"
-            android:title="Clothes" />
+            android:title="@string/clothes" />
     </group>
-    <item android:title="Help">
+    <item android:title="@string/help">
         <menu>
             <item
                 android:id="@+id/nav_profile"
                 android:icon="@drawable/ic_profile"
-                android:title="Company Profile" />
+                android:title="@string/company_profile" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/logout" />
         </menu>
     </item>
 </menu>

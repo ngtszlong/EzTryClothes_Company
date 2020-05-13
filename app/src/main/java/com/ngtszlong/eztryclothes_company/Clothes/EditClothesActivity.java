@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -86,7 +87,9 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
     int PICK_IMAGE_REQUEST = 10001;
     Uri filePath_try;
     Uri filePath_img;
-    String action;
+    Uri getFilePath_try;
+    Uri getFilePath_img;
+    String action ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +99,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
         toolbar = findViewById(R.id.tb_editproduct);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Edit Product");
+        getSupportActionBar().setTitle(getText(R.string.EditProduct));
 
         Intent intent = getIntent();
         No = intent.getStringExtra("no");
@@ -155,6 +158,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
 
             }
         });
+        mRef.keepSynced(true);
         img_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,6 +253,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                         }
                     }
                 }
+                Toast.makeText(EditClothesActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -256,6 +261,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
 
             }
         });
+        onBackPressed();
     }
 
     @Override
@@ -266,9 +272,9 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                 switch (resultCode) {
                     case RESULT_OK:
                         if (data != null && data.getData() != null) {
-                            filePath_img = data.getData();
+                            getFilePath_img = data.getData();
                             try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath_img);
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), getFilePath_img);
                                 img_image.setImageBitmap(bitmap);
                                 handleUpload(bitmap);
                             } catch (IOException e) {
@@ -283,9 +289,9 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                 switch (resultCode) {
                     case RESULT_OK:
                         if (data != null && data.getData() != null) {
-                            filePath_try = data.getData();
+                            getFilePath_try = data.getData();
                             try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath_try);
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), getFilePath_try);
                                 img_try.setImageBitmap(bitmap);
                                 handleUpload(bitmap);
                             } catch (IOException e) {
