@@ -6,12 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ngtszlong.eztryclothes_company.R;
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +54,15 @@ public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.
                 context.getApplicationContext().startActivity(intent);
             }
         });
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = fAuth.getCurrentUser();
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Clothes").child(clothesList.getNo());
+                reference.removeValue();
+            }
+        });
     }
 
     @Override
@@ -60,11 +74,13 @@ public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.
         ImageView imageView;
         TextView textView;
         Button btn_edit;
+        ImageButton imageButton;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_cloth_img);
             textView = itemView.findViewById(R.id.txt_cloth_name);
             btn_edit = itemView.findViewById(R.id.btn_cloth_edit);
+            imageButton = itemView.findViewById(R.id.btn_delete);
         }
     }
 }

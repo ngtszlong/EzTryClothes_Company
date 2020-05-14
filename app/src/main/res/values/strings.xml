@@ -48,6 +48,9 @@
     <string name="YourClothesList"> Your Clothes List</string>
     <string name="EditProduct">Edit Product</string>
     <string name="CustomerPurchaseOrder">Customer Purchase Order</string>
+    <string name="order_no">Order no:</string>
+    <string name="customer_address">Customer Address :</string>
+    <string name="customer_name">Customer Name :</string>
     <string-array name="type">
         <item>Hoodies</item>
         <item>Shirt</item>

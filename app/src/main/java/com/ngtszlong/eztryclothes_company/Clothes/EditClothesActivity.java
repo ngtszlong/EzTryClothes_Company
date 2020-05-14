@@ -7,7 +7,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class EditClothesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -271,16 +275,32 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
             if (requestCode == PICK_IMAGE_REQUEST) {
                 switch (resultCode) {
                     case RESULT_OK:
-                        if (data != null && data.getData() != null) {
-                            getFilePath_img = data.getData();
-                            try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), getFilePath_img);
-                                img_image.setImageBitmap(bitmap);
-                                handleUpload(bitmap);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                        Uri getFilePath_img = data.getData();
+                        try {
+                            String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+                            Cursor cur = managedQuery(getFilePath_img, orientationColumn, null, null, null);
+                            int orientation = -1;
+                            if (cur != null && cur.moveToFirst()) {
+                                orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
                             }
-                            break;
+                            InputStream imageStream = getContentResolver().openInputStream(getFilePath_img);
+                            Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                            switch (orientation) {
+                                case 90:
+                                    bitmap = rotateImage(bitmap, 90);
+                                    break;
+                                case 180:
+                                    bitmap = rotateImage(bitmap, 180);
+                                    break;
+                                case 270:
+                                    bitmap = rotateImage(bitmap, 270);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            handleUpload(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                 }
             }
@@ -288,21 +308,43 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
             if (requestCode == PICK_IMAGE_REQUEST) {
                 switch (resultCode) {
                     case RESULT_OK:
-                        if (data != null && data.getData() != null) {
-                            getFilePath_try = data.getData();
-                            try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), getFilePath_try);
-                                img_try.setImageBitmap(bitmap);
-                                handleUpload(bitmap);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                        Uri getFilePath_try = data.getData();
+                        try {
+                            String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+                            Cursor cur = managedQuery(getFilePath_try, orientationColumn, null, null, null);
+                            int orientation = -1;
+                            if (cur != null && cur.moveToFirst()) {
+                                orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
                             }
-                            break;
+                            InputStream imageStream = getContentResolver().openInputStream(getFilePath_try);
+                            Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                            switch (orientation) {
+                                case 90:
+                                    bitmap = rotateImage(bitmap, 90);
+                                    break;
+                                case 180:
+                                    bitmap = rotateImage(bitmap, 180);
+                                    break;
+                                case 270:
+                                    bitmap = rotateImage(bitmap, 270);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            handleUpload(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                 }
             }
         }
+    }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
     }
 
     private void handleUpload(Bitmap bitmap) {

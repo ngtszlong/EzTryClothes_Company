@@ -24,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.ngtszlong.eztryclothes_company.R;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class OrderFragment extends Fragment {
     public static ArrayList<Order> orderArrayList;
