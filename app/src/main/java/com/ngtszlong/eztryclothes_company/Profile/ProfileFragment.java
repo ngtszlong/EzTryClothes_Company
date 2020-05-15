@@ -4,7 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -32,9 +35,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ngtszlong.eztryclothes_company.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
@@ -53,6 +58,7 @@ public class ProfileFragment extends Fragment {
     int PICK_IMAGE_REQUEST = 10001;
     Uri filePath;
     Uri geturi;
+    ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,10 +77,10 @@ public class ProfileFragment extends Fragment {
         if (firebaseUser.getPhotoUrl() != null) {
             Glide.with(this).load(firebaseUser.getPhotoUrl()).into(imageView);
         }
-        if (firebaseUser.getEmail() != null){
+        if (firebaseUser.getEmail() != null) {
             edt_email.setText(firebaseUser.getEmail());
         }
-        if (firebaseUser.getDisplayName() != null){
+        if (firebaseUser.getDisplayName() != null) {
             edt_name.setText(firebaseUser.getDisplayName());
         }
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -84,12 +90,18 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
+        if (firebaseUser.getPhotoUrl() != null){
+            Picasso.get().load(firebaseUser.getPhotoUrl()).into(imageView);
+        }
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage(getString(R.string.Pleasewait));
 
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setPhotoUri(geturi).setDisplayName(edt_name.getText().toString()).build();
+                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setDisplayName(edt_name.getText().toString()).build();
                 firebaseUser.updateProfile(request)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -115,30 +127,56 @@ public class ProfileFragment extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST) {
             switch (resultCode) {
                 case RESULT_OK:
-                    if (data != null && data.getData() != null) {
-                        filePath = data.getData();
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
-                            imageView.setImageBitmap(bitmap);
-                            handleUpload(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    Uri selectedImage = data.getData();
+                    try {
+                        String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+                        Cursor cur = getActivity().managedQuery(selectedImage, orientationColumn, null, null, null);
+                        int orientation = -1;
+                        if (cur != null && cur.moveToFirst()) {
+                            orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
                         }
-                        break;
+                        InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                        Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                        switch (orientation) {
+                            case 90:
+                                bitmap = rotateImage(bitmap, 90);
+                                break;
+                            case 180:
+                                bitmap = rotateImage(bitmap, 180);
+                                break;
+                            case 270:
+                                bitmap = rotateImage(bitmap, 270);
+                                break;
+                            default:
+                                break;
+                        }
+                        progressDialog.show();
+                        imageView.setImageBitmap(bitmap);
+                        handleUpload(bitmap);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
             }
         }
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
+    }
+
     private void handleUpload(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://eztryclothes-3b490.appspot.com");
         final StorageReference reference = storageReference
                 .child("CompanyLogo")
-                .child(uid + ".jpeg");
+                .child(uid + ".png");
 
         reference.putBytes(baos.toByteArray())
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -162,6 +200,21 @@ public class ProfileFragment extends Fragment {
             public void onSuccess(Uri uri) {
                 Log.d(TAG, "onSuccess: " + uri);
                 geturi = uri;
+                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder().setPhotoUri(geturi).build();
+                firebaseUser.updateProfile(request)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                progressDialog.dismiss();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), "Profile image failed", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
             }
         });
     }

@@ -51,6 +51,7 @@
     <string name="order_no">Order no:</string>
     <string name="customer_address">Customer Address :</string>
     <string name="customer_name">Customer Name :</string>
+    <string name="Pleasewait">Loading, Please wait</string>
     <string-array name="type">
         <item>Hoodies</item>
         <item>Shirt</item>

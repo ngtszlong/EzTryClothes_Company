@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -94,6 +95,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
     Uri getFilePath_try;
     Uri getFilePath_img;
     String action ="";
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,9 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
 
         Intent intent = getIntent();
         No = intent.getStringExtra("no");
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.Pleasewait));
 
         edt_name_chi = findViewById(R.id.edt_edit_name_chi);
         edt_name_eng = findViewById(R.id.edt_edit_name_eng);
@@ -298,6 +303,8 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                                 default:
                                     break;
                             }
+                            progressDialog.show();
+                            img_image.setImageBitmap(bitmap);
                             handleUpload(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -331,6 +338,8 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                                 default:
                                     break;
                             }
+                            progressDialog.show();
+                            img_try.setImageBitmap(bitmap);
                             handleUpload(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -403,6 +412,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                 public void onSuccess(Uri uri) {
                     Log.d(TAG, "onSuccess: " + uri);
                     filePath_img = uri;
+                    progressDialog.dismiss();
                 }
             });
         } else if (action.equals("TRY")) {
@@ -411,6 +421,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                 public void onSuccess(Uri uri) {
                     Log.d(TAG, "onSuccess: " + uri);
                     filePath_try = uri;
+                    progressDialog.dismiss();
                 }
             });
         }

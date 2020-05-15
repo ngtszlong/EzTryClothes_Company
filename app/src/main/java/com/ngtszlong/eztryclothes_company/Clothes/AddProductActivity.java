@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -93,6 +94,7 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
     Uri getFilePath_try;
     Uri getFilePath_img;
     String action;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,9 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getText(R.string.AddProduct));
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.Pleasewait));
 
         rb_male.setChecked(true);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.type, android.R.layout.simple_spinner_item);
@@ -215,6 +220,7 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
                                 default:
                                     break;
                             }
+                            progressDialog.show();
                             handleUpload(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -248,6 +254,7 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
                                 default:
                                     break;
                             }
+                            progressDialog.show();
                             handleUpload(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -320,6 +327,7 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
                 public void onSuccess(Uri uri) {
                     Log.d(TAG, "onSuccess: " + uri);
                     filePath_img = uri;
+                    progressDialog.dismiss();
                 }
             });
         } else if (action.equals("TRY")) {
@@ -328,6 +336,7 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
                 public void onSuccess(Uri uri) {
                     Log.d(TAG, "onSuccess: " + uri);
                     filePath_try = uri;
+                    progressDialog.dismiss();
                 }
             });
         }
