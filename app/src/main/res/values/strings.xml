@@ -57,5 +57,7 @@
         <item>Shirt</item>
         <item>T-Shirt</item>
         <item>Dress</item>
+        <item>jeans</item>
+        <item>shorts</item>
     </string-array>
 </resources>
