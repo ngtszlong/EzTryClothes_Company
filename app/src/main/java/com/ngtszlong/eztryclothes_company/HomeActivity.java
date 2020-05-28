@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.Chinese:
                 setLocale("zh");
                 finish();

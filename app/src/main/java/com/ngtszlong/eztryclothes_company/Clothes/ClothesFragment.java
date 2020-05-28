@@ -26,21 +26,17 @@ import com.ngtszlong.eztryclothes_company.R;
 import java.util.ArrayList;
 
 public class ClothesFragment extends Fragment {
-    FloatingActionButton floatingActionButton;
-    RecyclerView recyclerView;
-    ClothesListAdapter clothesListAdapter;
-    ArrayList<ClothesList> clothesListArrayList;
+    private RecyclerView recyclerView;
+    private ClothesListAdapter clothesListAdapter;
+    private ArrayList<ClothesList> clothesListArrayList;
 
-    FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mRef;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
+    private FirebaseUser firebaseUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_clothes, container, false);
         getActivity().setTitle(getText(R.string.YourClothesList));
-        floatingActionButton = view.findViewById(R.id.fab);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,18 +45,18 @@ public class ClothesFragment extends Fragment {
             }
         });
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser  =firebaseAuth.getCurrentUser();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         recyclerView = view.findViewById(R.id.rv_itemlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mRef = mFirebaseDatabase.getReference().child("Clothes");
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mRef = mFirebaseDatabase.getReference().child("Clothes");
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                SharedPreferences sp = getActivity().getSharedPreferences( "Setting", 0 );
+                SharedPreferences sp = getActivity().getSharedPreferences("Setting", 0);
                 clothesListArrayList = new ArrayList<ClothesList>();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     ClothesList l = dataSnapshot1.getValue(ClothesList.class);

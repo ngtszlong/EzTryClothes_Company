@@ -261,26 +261,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/release_date" />
-
-                <TextView
-                    android:id="@+id/txt_edit_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:hint="@string/tap_to_get_date"
-                    android:inputType="date"
-                    android:textSize="24sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/quantity" />
 
                 <EditText
@@ -304,11 +284,11 @@
 
                 <ImageView
                     android:id="@+id/img_edit_image"
-                    android:layout_weight="1"
-                    android:src="@drawable/noimage"
-                    android:layout_margin="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/noimage" />
             </LinearLayout>
 
             <LinearLayout
@@ -325,11 +305,11 @@
 
                 <ImageView
                     android:id="@+id/img_edit_try"
-                    android:layout_weight="1"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/noimage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/noimage" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView

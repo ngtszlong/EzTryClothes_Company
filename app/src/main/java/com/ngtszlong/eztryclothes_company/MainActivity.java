@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(R.string.CompanyLogin);
         fAuth = FirebaseAuth.getInstance();
-        if (fAuth.getCurrentUser() != null){
+        if (fAuth.getCurrentUser() != null) {
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
-        }else{
+        } else {
             nouserfound();
         }
     }
@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         String language = preferences.getString("My_Lang", "");
         setLocale(language);
     }
-
 
 
 }

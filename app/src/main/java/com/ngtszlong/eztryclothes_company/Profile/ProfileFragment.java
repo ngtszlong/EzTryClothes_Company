@@ -9,10 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -47,18 +49,16 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
-    ImageView imageView;
-    EditText edt_email;
-    EditText edt_name;
-    CardView cardView;
+    private ImageView imageView;
+    private EditText edt_email;
+    private EditText edt_name;
+    private CardView cardView;
 
-    FirebaseUser firebaseUser;
-    FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
-    int PICK_IMAGE_REQUEST = 10001;
-    Uri filePath;
-    Uri geturi;
-    ProgressDialog progressDialog;
+    private int PICK_IMAGE_REQUEST = 10001;
+    private Uri geturi;
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
         edt_name = view.findViewById(R.id.edt_pro_name);
         cardView = view.findViewById(R.id.btn_pro_update);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
         if (firebaseUser.getPhotoUrl() != null) {
@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
-        if (firebaseUser.getPhotoUrl() != null){
+        if (firebaseUser.getPhotoUrl() != null) {
             Picasso.get().load(firebaseUser.getPhotoUrl()).into(imageView);
         }
 
@@ -121,6 +121,7 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

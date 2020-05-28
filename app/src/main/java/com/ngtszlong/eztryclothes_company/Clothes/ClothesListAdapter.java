@@ -23,8 +23,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.ViewHolder> {
-    Context context;
-    ArrayList<ClothesList>clothesListArrayList;
+    private Context context;
+    private ArrayList<ClothesList> clothesListArrayList;
 
     public ClothesListAdapter(Context context, ArrayList<ClothesList> clothesListArrayList) {
         this.context = context;
@@ -42,13 +42,13 @@ public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final ClothesList clothesList = clothesListArrayList.get(position);
         holder.textView.setText(clothesList.getName_Eng());
-        if (!clothesList.getImage().equals("")){
+        if (!clothesList.getImage().equals("")) {
             Picasso.get().load(clothesList.getImage()).into(holder.imageView);
         }
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =  new Intent(context, EditClothesActivity.class);
+                Intent intent = new Intent(context, EditClothesActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("no", clothesList.getNo());
                 context.getApplicationContext().startActivity(intent);
@@ -57,8 +57,6 @@ public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.
         holder.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth fAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = fAuth.getCurrentUser();
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Clothes").child(clothesList.getNo());
                 reference.removeValue();
             }
@@ -75,6 +73,7 @@ public class ClothesListAdapter extends RecyclerView.Adapter<ClothesListAdapter.
         TextView textView;
         Button btn_edit;
         ImageButton imageButton;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_cloth_img);

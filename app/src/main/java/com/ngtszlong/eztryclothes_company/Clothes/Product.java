@@ -24,9 +24,8 @@ public class Product {
     private String Discount;
     private String try_photo;
     private String uid;
-    private String ReleaseDate;
 
-    public Product(String no, String company, String name_Chi, String name_Eng, String gender, String type, String color_Chi, String color_Eng, String image, String XL, String l, String m, String s, String XS, String description_Chi, String description_Eng, String material_Chi, String material_Eng, String quantity, String price, String discount, String try_photo, String uid, String releaseDate) {
+    public Product(String no, String company, String name_Chi, String name_Eng, String gender, String type, String color_Chi, String color_Eng, String image, String XL, String l, String m, String s, String XS, String description_Chi, String description_Eng, String material_Chi, String material_Eng, String quantity, String price, String discount, String try_photo, String uid) {
         No = no;
         Company = company;
         Name_Chi = name_Chi;
@@ -50,7 +49,6 @@ public class Product {
         Discount = discount;
         this.try_photo = try_photo;
         this.uid = uid;
-        ReleaseDate = releaseDate;
     }
 
     public Product() {
@@ -238,13 +236,5 @@ public class Product {
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-    public String getReleaseDate() {
-        return ReleaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        ReleaseDate = releaseDate;
     }
 }

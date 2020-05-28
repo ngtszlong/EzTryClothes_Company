@@ -1,8 +1,5 @@
 package com.ngtszlong.eztryclothes_company.Order;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,8 +24,8 @@ import java.util.ArrayList;
 
 public class OrderFragment extends Fragment {
     public static ArrayList<Order> orderArrayList;
-    OrderAdapter orderAdapter;
-    RecyclerView recyclerView;
+    private OrderAdapter orderAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,12 +41,11 @@ public class OrderFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 orderArrayList = new ArrayList<Order>();
-                SharedPreferences sp = getActivity().getSharedPreferences( "Setting", 0 );
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
-                        for (DataSnapshot dataSnapshot3: dataSnapshot2.getChildren()) {
+                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.getChildren()) {
+                        for (DataSnapshot dataSnapshot3 : dataSnapshot2.getChildren()) {
                             Order order = dataSnapshot3.getValue(Order.class);
-                            if (order.getCompanyuid().equals(firebaseUser.getUid())){
+                            if (order.getCompanyuid().equals(firebaseUser.getUid())) {
                                 orderArrayList.add(order);
                             }
                         }

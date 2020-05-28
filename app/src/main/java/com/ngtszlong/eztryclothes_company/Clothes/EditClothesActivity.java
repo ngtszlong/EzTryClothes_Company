@@ -97,8 +97,6 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
     int PICK_IMAGE_REQUEST = 10001;
     Uri filePath_try;
     Uri filePath_img;
-    Uri getFilePath_try;
-    Uri getFilePath_img;
     String action = "";
     ProgressDialog progressDialog;
 
@@ -136,7 +134,6 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
         edt_material_eng = findViewById(R.id.edt_edit_material_eng);
         edt_description_chi = findViewById(R.id.edt_edit_description_chi);
         edt_description_eng = findViewById(R.id.edt_edit_description_eng);
-        txt_date = findViewById(R.id.txt_edit_date);
         btn_upload = findViewById(R.id.btn_edit_Update);
         edt_quantity = findViewById(R.id.edt_edit_quantity);
         img_image = findViewById(R.id.img_edit_image);
@@ -185,12 +182,6 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                 txt_date.setText(sdf.format(myCalendar.getTime()));
             }
         };
-        txt_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(EditClothesActivity.this, R.style.DialogTheme, dateSetListener, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
         mRef.keepSynced(true);
         img_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,27 +203,27 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
 
         if (rb_xl.isChecked()) {
             XL = "Y";
-        }else{
+        } else {
             XL = "N";
         }
         if (rb_l.isChecked()) {
             L = "Y";
-        }else{
+        } else {
             L = "N";
         }
         if (rb_m.isChecked()) {
             M = "Y";
-        }else{
+        } else {
             M = "N";
         }
         if (rb_s.isChecked()) {
             S = "Y";
-        }else{
+        } else {
             S = "N";
         }
         if (rb_xs.isChecked()) {
             XS = "Y";
-        }else{
+        } else {
             XS = "N";
         }
 
@@ -272,27 +263,27 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                             product.setGender(gender);
                             if (rb_xl.isChecked()) {
                                 XL = "Y";
-                            }else{
+                            } else {
                                 XL = "N";
                             }
                             if (rb_l.isChecked()) {
                                 L = "Y";
-                            }else{
+                            } else {
                                 L = "N";
                             }
                             if (rb_m.isChecked()) {
                                 M = "Y";
-                            }else{
+                            } else {
                                 M = "N";
                             }
                             if (rb_s.isChecked()) {
                                 S = "Y";
-                            }else{
+                            } else {
                                 S = "N";
                             }
                             if (rb_xs.isChecked()) {
                                 XS = "Y";
-                            }else{
+                            } else {
                                 XS = "N";
                             }
                             product.setL(L);
@@ -317,7 +308,6 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                             } else {
                                 product.setTry_photo("");
                             }
-                            product.setReleaseDate(txt_date.getText().toString());
                             mRef.child(product.getNo()).setValue(product);
                         }
                     }
@@ -525,7 +515,6 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
         edt_material_eng.setText(l.getMaterial_Eng());
         edt_description_chi.setText(l.getDescription_Chi());
         edt_description_eng.setText(l.getDescription_Eng());
-        txt_date.setText(l.getReleaseDate());
         edt_quantity.setText(l.getQuantity());
         if (!l.getImage().equals("")) {
             Picasso.get().load(l.getImage()).into(img_image);

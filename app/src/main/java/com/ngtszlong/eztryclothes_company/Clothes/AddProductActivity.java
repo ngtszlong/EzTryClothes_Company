@@ -2,11 +2,11 @@ package com.ngtszlong.eztryclothes_company.Clothes;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,27 +14,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,10 +41,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class AddProductActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddProductFragment";
@@ -71,7 +64,6 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
     EditText edt_material_eng;
     EditText edt_description_chi;
     EditText edt_description_eng;
-    TextView txt_date;
     CardView btn_Add;
     Toolbar toolbar;
     CardView upload_image;
@@ -91,8 +83,6 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
     int PICK_IMAGE_REQUEST = 10001;
     Uri filePath_try;
     Uri filePath_img;
-    Uri getFilePath_try;
-    Uri getFilePath_img;
     String action;
     ProgressDialog progressDialog;
 
@@ -123,7 +113,6 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         edt_material_eng = findViewById(R.id.edt_material_eng);
         edt_description_chi = findViewById(R.id.edt_description_chi);
         edt_description_eng = findViewById(R.id.edt_description_eng);
-        txt_date = findViewById(R.id.txt_date);
         btn_Add = findViewById(R.id.btn_Add);
         upload_image = findViewById(R.id.btn_upload_photo);
         upload_try = findViewById(R.id.btn_upload_photo_for_try);
@@ -142,27 +131,6 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_type.setAdapter(adapter);
         spinner_type.setOnItemSelectedListener(this);
-
-        final Calendar myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                txt_date.setText(sdf.format(myCalendar.getTime()));
-            }
-        };
-
-        txt_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(AddProductActivity.this, R.style.DialogTheme, dateSetListener, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
 
         upload_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,10 +154,12 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 uploaddata();
+                onBackPressed();
             }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -412,7 +382,6 @@ public class AddProductActivity extends AppCompatActivity implements AdapterView
         } else {
             product.setTry_photo("");
         }
-        product.setReleaseDate(txt_date.getText().toString());
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Clothes");
         reference.child(date).setValue(product);
