@@ -46,6 +46,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.txt_order_itemprice.setText(order.getPrice());
         holder.quantity.setText(order.getQuantity());
         holder.name.setText(order.getCustomername());
+        holder.size.setText(order.getSize());
     }
 
     @Override
@@ -62,6 +63,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         TextView quantity;
         TextView address;
         TextView name;
+        TextView size;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +75,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             date = itemView.findViewById(R.id.txt_date);
             quantity = itemView.findViewById(R.id.txt_order_quantity);
             name = itemView.findViewById(R.id.txt_cus_name);
+            size = itemView.findViewById(R.id.txt_order_size);
         }
     }
 }
