@@ -17,8 +17,8 @@
     <string name="chinese">Chinese</string>
     <string name="english">English</string>
     <string name="gender">Gender :</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
+    <string name="male">MEN</string>
+    <string name="female">WOMEN</string>
     <string name="clothestype">Type :</string>
     <string name="color">Color :</string>
     <string name="price">Price</string>

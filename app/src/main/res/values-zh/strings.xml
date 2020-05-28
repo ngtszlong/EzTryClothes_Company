@@ -17,8 +17,8 @@
     <string name="chinese">中文</string>
     <string name="english">英文</string>
     <string name="gender">性別 :</string>
-    <string name="male">男性</string>
-    <string name="female">女性</string>
+    <string name="male">男裝</string>
+    <string name="female">女裝</string>
     <string name="clothestype">衣服類別 :</string>
     <string name="color">顏色 :</string>
     <string name="price">價錢</string>

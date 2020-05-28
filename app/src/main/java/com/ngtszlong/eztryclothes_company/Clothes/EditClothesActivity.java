@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -44,7 +46,10 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class EditClothesActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "EditProductFragment";
@@ -94,7 +99,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
     Uri filePath_img;
     Uri getFilePath_try;
     Uri getFilePath_img;
-    String action ="";
+    String action = "";
     ProgressDialog progressDialog;
 
     @Override
@@ -164,7 +169,26 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                txt_date.setText(sdf.format(myCalendar.getTime()));
+            }
+        };
+        txt_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(EditClothesActivity.this, R.style.DialogTheme, dateSetListener, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
         mRef.keepSynced(true);
@@ -188,18 +212,28 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
 
         if (rb_xl.isChecked()) {
             XL = "Y";
+        }else{
+            XL = "N";
         }
         if (rb_l.isChecked()) {
             L = "Y";
+        }else{
+            L = "N";
         }
         if (rb_m.isChecked()) {
             M = "Y";
+        }else{
+            M = "N";
         }
         if (rb_s.isChecked()) {
             S = "Y";
+        }else{
+            S = "N";
         }
         if (rb_xs.isChecked()) {
             XS = "Y";
+        }else{
+            XS = "N";
         }
 
         btn_upload.setOnClickListener(new View.OnClickListener() {
@@ -212,9 +246,9 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
 
     private void upload() {
         if (rb_male.isChecked()) {
-            gender = "Male";
+            gender = "MEN";
         } else if (rb_female.isChecked()) {
-            gender = "Female";
+            gender = "WOMEN";
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mRef = mFirebaseDatabase.getReference().child("Clothes");
@@ -236,11 +270,37 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                             product.setDescription_Eng(edt_description_eng.getText().toString());
                             product.setDiscount(edt_discourt.getText().toString());
                             product.setGender(gender);
+                            if (rb_xl.isChecked()) {
+                                XL = "Y";
+                            }else{
+                                XL = "N";
+                            }
+                            if (rb_l.isChecked()) {
+                                L = "Y";
+                            }else{
+                                L = "N";
+                            }
+                            if (rb_m.isChecked()) {
+                                M = "Y";
+                            }else{
+                                M = "N";
+                            }
+                            if (rb_s.isChecked()) {
+                                S = "Y";
+                            }else{
+                                S = "N";
+                            }
+                            if (rb_xs.isChecked()) {
+                                XS = "Y";
+                            }else{
+                                XS = "N";
+                            }
                             product.setL(L);
                             product.setM(M);
                             product.setXS(XS);
                             product.setXL(XL);
                             product.setS(S);
+                            product.setType(spinner_type.getSelectedItem().toString());
                             //product.setType(spinner_type.getSelectedItem().toString());
                             product.setQuantity(edt_quantity.getText().toString());
                             product.setName_Chi(edt_name_chi.getText().toString());
@@ -249,7 +309,7 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
                             product.setPrice(edt_price.getText().toString());
                             if (filePath_img != null) {
                                 product.setImage(filePath_img.toString());
-                            }else{
+                            } else {
                                 product.setImage("");
                             }
                             if (filePath_try != null) {
@@ -430,14 +490,14 @@ public class EditClothesActivity extends AppCompatActivity implements AdapterVie
     private void putdata(Product l) {
         edt_name_chi.setText(l.getName_Chi());
         edt_name_eng.setText(l.getName_Eng());
-        if (l.getGender().equals("Male")) {
+        if (l.getGender().equals("MEN")) {
             rb_male.setChecked(true);
-        } else if (l.getGender().equals("Female")) {
+        } else if (l.getGender().equals("WOMEN")) {
             rb_female.setChecked(true);
         }
         int index = 0;
-        for (int i=0; i<spinner_type.getCount();i++){
-            if (spinner_type.getItemAtPosition(i).equals(l.getType())){
+        for (int i = 0; i < spinner_type.getCount(); i++) {
+            if (spinner_type.getItemAtPosition(i).equals(l.getType())) {
                 index = i;
             }
         }
